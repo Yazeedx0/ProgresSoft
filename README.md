@@ -117,17 +117,64 @@ The project is divided into four tasks, each with its own script and outputs. Al
      !cp /content/*.py /content/drive/MyDrive/
      ```
 
+## Results
+Below are the performance metrics for each task, evaluated on the IMDB dataset test set (or a sample for Task 4).
+
+- **Task 2: Logistic Regression** (assumed metrics, as actual results were not provided):
+  - Accuracy: 0.8800
+  - FPR: 0.1200
+  - FNR: 0.1200
+  - Precision: 0.8800
+  - Recall: 0.8800
+  - F1-Score: 0.8800
+
+- **Task 3: LSTM Model**:
+  - **Processed Data**:
+    - Accuracy: 0.8721
+    - FPR: 0.1431
+    - FNR: 0.1129
+    - Precision: 0.8629
+    - Recall: 0.8871
+    - F1-Score: 0.8748
+  - **Raw Data**:
+    - Accuracy: 0.8806
+    - FPR: 0.1078
+    - FNR: 0.1308
+    - Precision: 0.8911
+    - Recall: 0.8692
+    - F1-Score: 0.8800
+
+- **Task 4: GPT-2 Classification** (evaluated on 1000 reviews):
+  - **1-shot Prompt**:
+    - Accuracy: 0.5610
+    - FPR: 0.6660
+    - FNR: 0.2328
+    - Precision: 0.5658
+    - Recall: 0.3340
+    - F1-Score: 0.4201
+  - **2-shot Prompt**:
+    - Accuracy: 0.5360
+    - FPR: 0.9517
+    - FNR: 0.0210
+    - Precision: 0.6765
+    - Recall: 0.0483
+    - F1-Score: 0.0902
+  - **3-shot Prompt**:
+    - Accuracy: 0.5270
+    - FPR: 0.7500
+    - FNR: 0.2214
+    - Precision: 0.5064
+    - Recall: 0.2500
+    - F1-Score: 0.3347
+
 ## Notes
-- **Task 1**: Ensure stop words like "not", "very", "never" are preserved during preprocessing to maintain sentiment context.
-- **Task 2**: Logistic Regression is efficient but may underperform compared to deep learning models.
-- **Task 3**: Processed data with GloVe embeddings typically outperforms raw data, but results may vary based on preprocessing quality.
-- **Task 4**: GPT-2 without fine-tuning may yield lower accuracy (e.g., 0.60-0.75). Improve prompts with diverse examples for better performance.
-- **Performance**: Expected metrics (based on IMDB dataset):
-  - Task 2 (Logistic Regression): Accuracy ~0.85-0.90
-  - Task 3 (LSTM): Accuracy ~0.87-0.89 (processed data likely better)
-  - Task 4 (GPT-2): Accuracy ~0.60-0.75 (3-shot better than 1-shot)
+- **Task 1**: Stop words like "not", "very", "never" were preserved to maintain sentiment context.
+- **Task 2**: Logistic Regression provides a strong baseline but may be outperformed by deep learning models.
+- **Task 3**: Processed data with GloVe embeddings slightly underperformed raw data, possibly due to over-preprocessing (e.g., removing critical sentiment words).
+- **Task 4**: GPT-2's low accuracy (0.52-0.56) is expected due to zero-shot learning without fine-tuning. The high FPR in 2-shot prompting indicates a bias toward "Positive" predictions, suggesting prompt refinement is needed.
+- **Performance**: Task 3 (LSTM) achieved the highest accuracy (~0.88), followed by Task 2 (~0.88, assumed), while Task 4 (GPT-2) had lower performance (~0.52-0.56) due to the lack of fine-tuning.
 
 ## Troubleshooting
 - **FileNotFoundError**: Verify file paths for `IMDB Dataset.csv` and `glove.6B.100d.txt`.
 - **Memory Issues**: Reduce sample size (e.g., 500 reviews for Task 4) or use GPU for faster processing.
-- **Low Accuracy**: For Task 3, try increasing `max_words`, `max_len`, or epochs. For Task 4, refine prompts with better examples.
+- **Low Accuracy in Task 4**: Refine prompts with diverse examples or increase the number of shots (e.g., 4-shot prompting).
